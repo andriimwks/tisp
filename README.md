@@ -9,19 +9,31 @@ go get -u github.com/andriimwks/tisp
 ## Usage
 This package uses `io.Reader` interface to transfer data, so you can use `net.Conn`, `bytes.Buffer` etc.
 ```go
-buf := new(bytes.Buffer)
+package main
 
-err := tisp.Write(buf, "hello", "world")
-if err != nil {
-    log.Fatal(err)
+import (
+	"bytes"
+	"fmt"
+	"log"
+
+	"github.com/andriimwks/tisp"
+)
+
+func main() {
+	buf := new(bytes.Buffer)
+
+	err := tisp.Write(buf, "Hello", "World")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	values, err := tisp.Read(buf)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("%s, %s!\n", values[0], values[1]) // Hello, World!
 }
-
-values, err := tisp.Read(buf)
-if err != nil {
-    log.Fatal(err)
-}
-
-fmt.Println(values[0].(string)) // hello
 ```
 
 ## Supported types
