@@ -11,47 +11,47 @@ func Read(r io.Reader) ([]interface{}, error) {
 }
 
 func readValue(r io.Reader) (interface{}, error) {
-	t, err := readData[_type](r)
+	t, err := readData[flag](r)
 	if err != nil {
 		return nil, err
 	}
 
 	switch t {
-	case _nil:
+	case flagNil:
 		return nil, nil
-	case _bool:
+	case flagBool:
 		return readData[bool](r)
-	case _int:
+	case flagInt:
 		v, err := readData[int32](r)
 		return int(v), err
-	case _int8:
+	case flagInt8:
 		return readData[int8](r)
-	case _int16:
+	case flagInt16:
 		return readData[int16](r)
-	case _int32:
+	case flagInt32:
 		return readData[int32](r)
-	case _int64:
+	case flagInt64:
 		return readData[int64](r)
-	case _uint:
+	case flagUint:
 		v, err := readData[uint32](r)
 		return uint(v), err
-	case _uint8:
+	case flagUint8:
 		return readData[uint8](r)
-	case _uint16:
+	case flagUint16:
 		return readData[uint16](r)
-	case _uint32:
+	case flagUint32:
 		return readData[uint32](r)
-	case _uint64:
+	case flagUint64:
 		return readData[uint64](r)
-	case _float32:
+	case flagFloat32:
 		return readData[float32](r)
-	case _float64:
+	case flagFloat64:
 		return readData[float64](r)
-	case _string:
+	case flagString:
 		return readString(r)
-	case _map:
+	case flagMap:
 		return readMap(r)
-	case _slice:
+	case flagSlice:
 		return readSlice(r)
 	default:
 		return nil, fmt.Errorf("expected type, found: %s", string(t))
@@ -81,14 +81,14 @@ func readMap(r io.Reader) (map[string]interface{}, error) {
 	mp := make(map[string]interface{})
 
 	for {
-		t, err := readData[_type](r)
+		t, err := readData[flag](r)
 		if err != nil {
 			return nil, err
 		}
 
-		if t == _break {
+		if t == flagBreak {
 			break
-		} else if t != _string {
+		} else if t != flagString {
 			return nil, fmt.Errorf("expected string, found: %s", string(t))
 		}
 

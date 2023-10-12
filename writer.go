@@ -7,49 +7,39 @@ import (
 )
 
 func Write(w io.Writer, vs ...interface{}) error {
-	if err := writeData(w, uint32(len(vs))); err != nil {
-		return err
-	}
-
-	for _, v := range vs {
-		if err := writeValue(w, v); err != nil {
-			return err
-		}
-	}
-
-	return nil
+	return writeSlice(w, vs, false)
 }
 
 func writeValue(w io.Writer, v interface{}) error {
 	switch v := v.(type) {
 	case nil:
-		return writeData(w, _nil)
+		return writeData(w, flagNil)
 	case bool:
-		return writeData(w, _bool, v)
+		return writeData(w, flagBool, v)
 	case int:
-		return writeData(w, _int, int32(v))
+		return writeData(w, flagBool, int32(v))
 	case int8:
-		return writeData(w, _int8, v)
+		return writeData(w, flagInt8, v)
 	case int16:
-		return writeData(w, _int16, v)
+		return writeData(w, flagInt16, v)
 	case int32:
-		return writeData(w, _int32, v)
+		return writeData(w, flagInt32, v)
 	case int64:
-		return writeData(w, _int64, v)
+		return writeData(w, flagInt64, v)
 	case uint:
-		return writeData(w, _uint, uint32(v))
+		return writeData(w, flagUint, uint32(v))
 	case uint8:
-		return writeData(w, _uint8, v)
+		return writeData(w, flagUint8, v)
 	case uint16:
-		return writeData(w, _uint16, v)
+		return writeData(w, flagUint16, v)
 	case uint32:
-		return writeData(w, _uint32, v)
+		return writeData(w, flagUint32, v)
 	case uint64:
-		return writeData(w, _uint64, v)
+		return writeData(w, flagUint64, v)
 	case float32:
-		return writeData(w, _float32, v)
+		return writeData(w, flagFloat32, v)
 	case float64:
-		return writeData(w, _float64, v)
+		return writeData(w, flagFloat64, v)
 	case string:
 		return writeString(w, v)
 	case map[string]interface{}:
@@ -60,9 +50,11 @@ func writeValue(w io.Writer, v interface{}) error {
 	return fmt.Errorf("unsupported type: %T", v)
 }
 
-func writeSlice(w io.Writer, arr []interface{}) error {
-	if err := writeData(w, _slice); err != nil {
-		return err
+func writeSlice(w io.Writer, arr []interface{}, flag ...bool) error {
+	if len(flag) <= 0 || flag[0] {
+		if err := writeData(w, flagSlice); err != nil {
+			return err
+		}
 	}
 
 	if err := writeData(w, uint32(len(arr))); err != nil {
@@ -79,7 +71,7 @@ func writeSlice(w io.Writer, arr []interface{}) error {
 }
 
 func writeMap(w io.Writer, m map[string]interface{}) error {
-	if err := writeData(w, _map); err != nil {
+	if err := writeData(w, flagMap); err != nil {
 		return err
 	}
 
@@ -100,11 +92,11 @@ func writeMap(w io.Writer, m map[string]interface{}) error {
 		}
 	}
 
-	return writeData(w, _break)
+	return writeData(w, flagBreak)
 }
 
 func writeString(w io.Writer, v string) error {
-	if err := writeData(w, _string); err != nil {
+	if err := writeData(w, flagString); err != nil {
 		return err
 	}
 	return writeByteSlice(w, []byte(v))
