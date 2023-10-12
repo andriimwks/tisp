@@ -22,6 +22,8 @@ func Write(w io.Writer, vs ...interface{}) error {
 
 func writeValue(w io.Writer, v interface{}) error {
 	switch v := v.(type) {
+	case nil:
+		return writeData(w, Nil)
 	case bool:
 		return writeData(w, Bool, v)
 	case int:

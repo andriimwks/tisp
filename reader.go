@@ -17,6 +17,8 @@ func readValue(r io.Reader) (interface{}, error) {
 	}
 
 	switch t {
+	case Nil:
+		return nil, nil
 	case Bool:
 		return readData[bool](r)
 	case Int:

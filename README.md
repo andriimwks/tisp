@@ -37,6 +37,7 @@ func main() {
 ```
 
 ## Supported types
+- nil
 - bool
 - int/8/16/32/64
 - uint/8/16/32/64

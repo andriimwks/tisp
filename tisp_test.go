@@ -9,7 +9,7 @@ import (
 )
 
 var testCase = []interface{}{
-	// nil,
+	nil,
 	true,
 	123,
 	int8(10),
@@ -45,6 +45,11 @@ func TestTISP(t *testing.T) {
 	}
 
 	for i, v := range vs {
+		// check for nil here because reflect panics :/
+		if v == nil && testCase[i] == nil {
+			continue
+		}
+
 		vv := reflect.ValueOf(v)
 		tv := reflect.ValueOf(testCase[i])
 
