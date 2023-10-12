@@ -1,24 +1,24 @@
 package tisp
 
-type Type uint8
+type _type uint8
 
 const (
-	Nil Type = iota + 1
-	Bool
-	Int
-	Int8
-	Int16
-	Int32
-	Int64
-	Uint
-	Uint8
-	Uint16
-	Uint32
-	Uint64
-	Float32
-	Float64
-	String
-	Map
-	Slice
-	Break
+	_nil _type = iota + 1
+	_bool
+	_int
+	_int8
+	_int16
+	_int32
+	_int64
+	_uint
+	_uint8
+	_uint16
+	_uint32
+	_uint64
+	_float32
+	_float64
+	_string
+	_map
+	_slice
+	_break
 )

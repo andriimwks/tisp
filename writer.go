@@ -23,33 +23,33 @@ func Write(w io.Writer, vs ...interface{}) error {
 func writeValue(w io.Writer, v interface{}) error {
 	switch v := v.(type) {
 	case nil:
-		return writeData(w, Nil)
+		return writeData(w, _nil)
 	case bool:
-		return writeData(w, Bool, v)
+		return writeData(w, _bool, v)
 	case int:
-		return writeData(w, Int, int32(v))
+		return writeData(w, _int, int32(v))
 	case int8:
-		return writeData(w, Int8, v)
+		return writeData(w, _int8, v)
 	case int16:
-		return writeData(w, Int16, v)
+		return writeData(w, _int16, v)
 	case int32:
-		return writeData(w, Int32, v)
+		return writeData(w, _int32, v)
 	case int64:
-		return writeData(w, Int64, v)
+		return writeData(w, _int64, v)
 	case uint:
-		return writeData(w, Uint, uint32(v))
+		return writeData(w, _uint, uint32(v))
 	case uint8:
-		return writeData(w, Uint8, v)
+		return writeData(w, _uint8, v)
 	case uint16:
-		return writeData(w, Uint16, v)
+		return writeData(w, _uint16, v)
 	case uint32:
-		return writeData(w, Uint32, v)
+		return writeData(w, _uint32, v)
 	case uint64:
-		return writeData(w, Uint64, v)
+		return writeData(w, _uint64, v)
 	case float32:
-		return writeData(w, Float32, v)
+		return writeData(w, _float32, v)
 	case float64:
-		return writeData(w, Float64, v)
+		return writeData(w, _float64, v)
 	case string:
 		return writeString(w, v)
 	case map[string]interface{}:
@@ -61,7 +61,7 @@ func writeValue(w io.Writer, v interface{}) error {
 }
 
 func writeSlice(w io.Writer, arr []interface{}) error {
-	if err := writeData(w, Slice); err != nil {
+	if err := writeData(w, _slice); err != nil {
 		return err
 	}
 
@@ -79,7 +79,7 @@ func writeSlice(w io.Writer, arr []interface{}) error {
 }
 
 func writeMap(w io.Writer, m map[string]interface{}) error {
-	if err := writeData(w, Map); err != nil {
+	if err := writeData(w, _map); err != nil {
 		return err
 	}
 
@@ -100,11 +100,11 @@ func writeMap(w io.Writer, m map[string]interface{}) error {
 		}
 	}
 
-	return writeData(w, Break)
+	return writeData(w, _break)
 }
 
 func writeString(w io.Writer, v string) error {
-	if err := writeData(w, String); err != nil {
+	if err := writeData(w, _string); err != nil {
 		return err
 	}
 	return writeByteSlice(w, []byte(v))
