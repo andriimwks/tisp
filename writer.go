@@ -17,7 +17,7 @@ func writeValue(w io.Writer, v interface{}) error {
 	case bool:
 		return writeData(w, flagBool, v)
 	case int:
-		return writeData(w, flagBool, int32(v))
+		return writeData(w, flagInt, int32(v))
 	case int8:
 		return writeData(w, flagInt8, v)
 	case int16:
@@ -45,13 +45,13 @@ func writeValue(w io.Writer, v interface{}) error {
 	case map[string]interface{}:
 		return writeMap(w, v)
 	case []interface{}:
-		return writeSlice(w, v)
+		return writeSlice(w, v, true)
 	}
 	return fmt.Errorf("unsupported type: %T", v)
 }
 
-func writeSlice(w io.Writer, arr []interface{}, flag ...bool) error {
-	if len(flag) <= 0 || flag[0] {
+func writeSlice(w io.Writer, arr []interface{}, flag bool) error {
+	if flag {
 		if err := writeData(w, flagSlice); err != nil {
 			return err
 		}

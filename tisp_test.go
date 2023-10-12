@@ -28,7 +28,7 @@ var testCase = []interface{}{
 	[]interface{}{123, false},
 }
 
-func TestTISP(t *testing.T) {
+func TestTiSP(t *testing.T) {
 	buf := new(bytes.Buffer)
 
 	err := tisp.Write(buf, testCase...)
